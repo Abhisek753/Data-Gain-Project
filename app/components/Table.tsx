@@ -2,6 +2,7 @@ import React from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa'; 
 
 const Table = () => {
+    
   const data = [
     {
       donor: 'Jimmy, Testington',
