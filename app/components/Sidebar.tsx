@@ -22,7 +22,7 @@ const sidebarItems: { name: string; icon: IconType; route: string }[] = [
   { name: "Face Recognition", icon: FaUser, route: "/face-recognition" },
   { name: "Daily Visit", icon: FaClipboardList, route: "/daily-visit" },
   { name: "Donate", icon: FaDonate, route: "/donate" },
-  { name: "Work Orders", icon: FaFileAlt, route: "/work-orders" },
+  { name: "Work Orders", icon: FaFileAlt, route: "/pages/work-orders" },
   { name: "Reports", icon: FaChartPie, route: "/reports" },
   { name: "Report History", icon: FaHistory, route: "/report-history" },
   { name: "Test History", icon: FaClipboardCheck, route: "/test-history" },
