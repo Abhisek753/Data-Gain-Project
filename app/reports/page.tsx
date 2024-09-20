@@ -1,4 +1,5 @@
 // For Next.js 13 and above (in /app/reports/page.tsx)
+"use client";
 import ReportForm from "../components/ReportForm";
 
 export default function ReportsPage() {

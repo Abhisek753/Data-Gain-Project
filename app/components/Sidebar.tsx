@@ -26,7 +26,7 @@ const sidebarItems: { name: string; icon: IconType; route: string }[] = [
   { name: "Reports", icon: FaChartPie, route: "/reports" },
   { name: "Report History", icon: FaHistory, route: "/report-history" },
   { name: "Test History", icon: FaClipboardCheck, route: "/test-history" },
-  { name: "Calendar", icon: FaCalendar, route: "/calendar" },
+  { name: "Calendar", icon: FaCalendar, route: "/pages/calendar" },
   { name: "Settings", icon: FaCog, route: "/settings" },
 ];
 
