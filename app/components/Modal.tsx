@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 interface ModalProps {
@@ -18,6 +18,41 @@ const Modal: React.FC<ModalProps> = ({
   setFormData,
   isEditMode,
 }) => {
+  const [errors, setErrors] = useState({
+    donor: '',
+    panels: '',
+    barcode: '',
+    source: '',
+    date: '',
+    amount: '',
+    observedBy: '',
+    status: '',
+  });
+
+  // Validate fields
+  const validateForm = () => {
+    const newErrors = {
+      donor: formData.donor ? '' : 'Donor is required',
+      panels: formData.panels ? '' : 'Panels are required',
+      barcode: formData.barcode ? '' : 'Barcode is required',
+      source: formData.source ? '' : 'Source is required',
+      date: formData.date ? '' : 'Date is required',
+      amount: formData.amount ? '' : 'Amount is required',
+      observedBy: formData.observedBy ? '' : 'Observed By is required',
+      status: formData.status ? '' : 'Status is required',
+    };
+
+    setErrors(newErrors);
+
+    return Object.values(newErrors).every((error) => !error); 
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      onSubmit();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -33,78 +68,97 @@ const Modal: React.FC<ModalProps> = ({
           {isEditMode ? 'Edit Row' : 'Add New Row'}
         </h2>
         <form>
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="text"
-            placeholder="Donor"
-            value={formData.donor}
-            onChange={(e) => setFormData({ ...formData, donor: e.target.value })}
-          />
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="text"
-            placeholder="Panels"
-            value={formData.panels}
-            onChange={(e) =>
-              setFormData({ ...formData, panels: e.target.value })
-            }
-          />
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="text"
-            placeholder="Barcode"
-            value={formData.barcode}
-            onChange={(e) =>
-              setFormData({ ...formData, barcode: e.target.value })
-            }
-          />
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="text"
-            placeholder="Source"
-            value={formData.source}
-            onChange={(e) =>
-              setFormData({ ...formData, source: e.target.value })
-            }
-          />
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="date"
-            placeholder="Date"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-          />
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="text"
-            placeholder="Amount"
-            value={formData.amount}
-            onChange={(e) =>
-              setFormData({ ...formData, amount: e.target.value })
-            }
-          />
-          <input
-            className="mb-2 w-full p-2 border rounded"
-            type="text"
-            placeholder="Observed By"
-            value={formData.observedBy}
-            onChange={(e) =>
-              setFormData({ ...formData, observedBy: e.target.value })
-            }
-          />
-          <input
-            className="mb-4 w-full p-2 border rounded"
-            type="text"
-            placeholder="Status"
-            value={formData.status}
-            onChange={(e) =>
-              setFormData({ ...formData, status: e.target.value })
-            }
-          />
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.donor ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Donor"
+              value={formData.donor}
+              onChange={(e) => setFormData({ ...formData, donor: e.target.value })}
+            />
+            {errors.donor && <p className="text-red-500 text-sm">{errors.donor}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.panels ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Panels"
+              value={formData.panels}
+              onChange={(e) => setFormData({ ...formData, panels: e.target.value })}
+            />
+            {errors.panels && <p className="text-red-500 text-sm">{errors.panels}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.barcode ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Barcode"
+              value={formData.barcode}
+              onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
+            />
+            {errors.barcode && <p className="text-red-500 text-sm">{errors.barcode}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.source ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Source"
+              value={formData.source}
+              onChange={(e) => setFormData({ ...formData, source: e.target.value })}
+            />
+            {errors.source && <p className="text-red-500 text-sm">{errors.source}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.date ? 'border-red-500' : ''}`}
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            />
+            {errors.date && <p className="text-red-500 text-sm">{errors.date}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.amount ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Amount"
+              value={formData.amount}
+              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+            />
+            {errors.amount && <p className="text-red-500 text-sm">{errors.amount}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.observedBy ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Observed By"
+              value={formData.observedBy}
+              onChange={(e) => setFormData({ ...formData, observedBy: e.target.value })}
+            />
+            {errors.observedBy && <p className="text-red-500 text-sm">{errors.observedBy}</p>}
+          </div>
+
+          <div className="mb-4">
+            <input
+              className={`mb-1 w-full p-2 border rounded ${errors.status ? 'border-red-500' : ''}`}
+              type="text"
+              placeholder="Status"
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+            />
+            {errors.status && <p className="text-red-500 text-sm">{errors.status}</p>}
+          </div>
+
           <button
             type="button"
-            onClick={onSubmit}
-            className="w-full py-2 bg-blue-500 text-white rounded"
+            onClick={handleSubmit}
+            className="w-full py-2 bg-teal-500 text-white rounded"
           >
             {isEditMode ? 'Update' : 'Add'}
           </button>
