@@ -8,12 +8,12 @@ import Modal from './Modal';
 
 const Table = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const tableData = useSelector((state: RootState) => state.table.data); // Get table data from Redux
+  const tableData = useSelector((state: RootState) => state.table.data); 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentRowIndex, setCurrentRowIndex] = useState<number | null>(null);
-  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null); // Manage dropdown open state
+  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null); 
 
   const [formData, setFormData] = useState({
     donor: '',
@@ -26,7 +26,6 @@ const Table = () => {
     status: '',
   });
 
-  // Open the modal for adding or editing a row
   const openAddModal = () => {
     setFormData({
       donor: '',
