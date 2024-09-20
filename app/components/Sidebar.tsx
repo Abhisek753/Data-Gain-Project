@@ -14,8 +14,9 @@ import {
   FaHistory,
   FaDonate,
   FaClipboardCheck,
-} from "react-icons/fa"; 
-import { IconType } from "react-icons"; 
+} from "react-icons/fa";
+import { IconType } from "react-icons";
+import { usePathname } from "next/navigation"; 
 
 const sidebarItems: { name: string; icon: IconType; route: string }[] = [
   { name: "Face Recognition", icon: FaUser, route: "/pages/page-not-found" },
@@ -31,6 +32,7 @@ const sidebarItems: { name: string; icon: IconType; route: string }[] = [
 
 const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const pathname = usePathname(); // Get the current route
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -40,7 +42,7 @@ const Sidebar = () => {
     <div
       className={`${
         isExpanded ? "w-64" : "w-20"
-      } h-screen bg-white text-black border-r border-gray-300 transition-all duration-300 ease-in-out flex flex-col`}
+      } h-screen bg-teal-50 text-black border-r border-gray-300 transition-all duration-300 ease-in-out flex flex-col`}
     >
       <div className="flex items-center justify-between px-4 py-3 bg-gray-100 border-b border-gray-300">
         <h1 className={`${isExpanded ? "block" : "hidden"} text-lg font-bold`}>
@@ -53,7 +55,12 @@ const Sidebar = () => {
 
       <ul className="mt-4">
         {sidebarItems.map((item, index) => (
-          <li key={index} className="flex items-center px-4 py-3 hover:bg-gray-200 cursor-pointer">
+          <li
+            key={index}
+            className={`flex items-center px-4 py-3 cursor-pointer hover:bg-teal-100 ${
+              pathname === item.route ? "bg-teal-200 text-teal-700" : ""
+            }`}
+          >
             <item.icon className="text-xl" />
             <Link href={item.route} className={`ml-4 ${isExpanded ? "block" : "hidden"}`}>
               {item.name}
