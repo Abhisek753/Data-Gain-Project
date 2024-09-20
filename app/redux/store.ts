@@ -1,12 +1,12 @@
 "use client";
 
 import { configureStore } from '@reduxjs/toolkit';
-// import calendarReducer from '../redux/calendarSlice';
+import calendarReducer from '../redux/calendarSlice';
 import tableReducer from '../redux/tableSlice';
 
 const store = configureStore({
   reducer: {
-    // calendar: calendarReducer,
+    calendar: calendarReducer,
     table: tableReducer,
   },
 });

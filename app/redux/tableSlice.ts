@@ -1,7 +1,6 @@
 "use client";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
 // Define the type for the table data
 export interface TableData {
   donor: string;

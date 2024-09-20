@@ -20,3 +20,17 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Add custom styles for the calendar cells */
+.rbc-event {
+  height: auto !important; /* Override default height */
+  line-height: 1rem !important; /* Make text more compact */
+  padding: 2px 5px !important; /* Smaller padding */
+}
+
+.rbc-day-slot .rbc-event-content {
+  white-space: nowrap;
+  overflow: hidden; /* Prevent long titles from overflowing */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+}
+

@@ -14,20 +14,19 @@ import {
   FaHistory,
   FaDonate,
   FaClipboardCheck,
-} from "react-icons/fa"; // Import necessary icons
-import { IconType } from "react-icons"; // For type safety with icons
+} from "react-icons/fa"; 
+import { IconType } from "react-icons"; 
 
-// Sidebar items with icons and names
 const sidebarItems: { name: string; icon: IconType; route: string }[] = [
-  { name: "Face Recognition", icon: FaUser, route: "/face-recognition" },
-  { name: "Daily Visit", icon: FaClipboardList, route: "/daily-visit" },
-  { name: "Donate", icon: FaDonate, route: "/donate" },
+  { name: "Face Recognition", icon: FaUser, route: "/pages/page-not-found" },
+  { name: "Daily Visit", icon: FaClipboardList, route: "/pages/page-not-found" },
+  { name: "Donate", icon: FaDonate, route: "/pages/page-not-found" },
   { name: "Work Orders", icon: FaFileAlt, route: "/pages/work-orders" },
   { name: "Reports", icon: FaChartPie, route: "/reports" },
-  { name: "Report History", icon: FaHistory, route: "/report-history" },
-  { name: "Test History", icon: FaClipboardCheck, route: "/test-history" },
+  { name: "Report History", icon: FaHistory, route: "/pages/page-not-found" },
+  { name: "Test History", icon: FaClipboardCheck, route: "/pages/page-not-found" },
   { name: "Calendar", icon: FaCalendar, route: "/pages/calendar" },
-  { name: "Settings", icon: FaCog, route: "/settings" },
+  { name: "Settings", icon: FaCog, route: "/pages/page-not-found" },
 ];
 
 const Sidebar = () => {
@@ -52,13 +51,10 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Sidebar items */}
       <ul className="mt-4">
         {sidebarItems.map((item, index) => (
           <li key={index} className="flex items-center px-4 py-3 hover:bg-gray-200 cursor-pointer">
-            {/* Icon */}
             <item.icon className="text-xl" />
-            {/* Link and text (hidden when collapsed) */}
             <Link href={item.route} className={`ml-4 ${isExpanded ? "block" : "hidden"}`}>
               {item.name}
             </Link>

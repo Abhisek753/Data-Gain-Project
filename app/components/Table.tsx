@@ -1,86 +1,83 @@
-"use client"
-import React from 'react';
-import { FaSearch, FaFilter } from 'react-icons/fa'; 
+"use client";
+import React, { useState } from 'react';
+import { FaEllipsisV } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../redux/store';
+import { addRow, removeRow, updateRow } from '../redux/tableSlice';
+import Modal from './Modal';
 
 const Table = () => {
-    
-  const data = [
-    {
-      donor: 'Jimmy, Testington',
-      panels: '3 Panel, 12 Panel U CUP',
-      barcode: '179620409',
-      source: 'medicaid',
-      date: '07/18/2023',
-      amount: '$0.00',
-      observedBy: 'Chavan Vishal',
-      status: 'Unable to Donate',
-    },
-    {
-      donor: 'Jimmy, Testington',
-      panels: '3 Panel, 12 Panel U CUP',
-      barcode: '1501691893',
-      source: 'Self Pay',
-      date: '07/18/2023',
-      amount: '$7.00',
-      observedBy: 'Chavan Vishal',
-      status: 'Refused',
-    },
-    {
-      donor: 'Jimmy, Testington',
-      panels: '3 Panel, 12 Panel U CUP',
-      barcode: '1937334336',
-      source: 'Self Pay',
-      date: '07/18/2023',
-      amount: '$0.00',
-      observedBy: 'Chavan Vishal',
-      status: 'Duplicate/Error',
-    },
-    {
-      donor: 'TestMishraa, Ramakrishnaa',
-      panels: '4th Panel, 3 Panel',
-      barcode: '1796557961',
-      source: 'Self Pay',
-      date: '07/18/2023',
-      amount: '$5.00',
-      observedBy: 'Chavan Vishal',
-      status: 'Insufficient Donation',
-    },
-    {
-      donor: 'TestMishraa, Ramakrishnaa',
-      panels: 'BA, 4th Panel',
-      barcode: '1729320465',
-      source: 'medicaid',
-      date: '07/18/2023',
-      amount: '$5.00',
-      observedBy: 'Chavan Vishal',
-      status: 'Approved',
-    },
-    {
-      donor: 'Jimmy, Testington',
-      panels: 'BZO, BZ2',
-      barcode: '1182496815',
-      source: 'Self Pay',
-      date: '07/18/2023',
-      amount: '$7.00',
-      observedBy: 'Mashalkar Rohit',
-      status: 'Approved',
-    },
-  ];
+  const dispatch = useDispatch<AppDispatch>();
+  const tableData = useSelector((state: RootState) => state.table.data); // Get table data from Redux
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [currentRowIndex, setCurrentRowIndex] = useState<number | null>(null);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null); // Manage dropdown open state
+
+  const [formData, setFormData] = useState({
+    donor: '',
+    panels: '',
+    barcode: '',
+    source: '',
+    date: '',
+    amount: '',
+    observedBy: '',
+    status: '',
+  });
+
+  // Open the modal for adding or editing a row
+  const openAddModal = () => {
+    setFormData({
+      donor: '',
+      panels: '',
+      barcode: '',
+      source: '',
+      date: '',
+      amount: '',
+      observedBy: '',
+      status: '',
+    });
+    setIsEditMode(false);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (index: number) => {
+    setFormData(tableData[index]);
+    setCurrentRowIndex(index);
+    setIsEditMode(true);
+    setIsModalOpen(true);
+  };
+
+  // Handle form submission for adding or updating rows
+  const handleSubmit = () => {
+    if (isEditMode && currentRowIndex !== null) {
+      dispatch(updateRow({ index: currentRowIndex, row: formData }));
+    } else {
+      dispatch(addRow(formData));
+    }
+    setIsModalOpen(false);
+  };
+
+  // Handle deleting a row
+  const handleDelete = (index: number) => {
+    dispatch(removeRow(index));
+  };
+
+  // Toggle the dropdown for a specific row
+  const toggleDropdown = (index: number) => {
+    setOpenDropdownIndex(openDropdownIndex === index ? null : index); // Toggle between opening and closing the dropdown
+  };
 
   return (
-    <div className="w-full p-6 bg-white border rounded-lg shadow-lg">
+    <div className="w-[98%] p-6 bg-white border rounded-lg shadow-lg relative h-[95vh]">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">Date: 06/01/2023 - 7/19/2023</h2>
-        <div className="flex space-x-4">
-          <button className="flex items-center justify-center px-4 py-2 text-white bg-teal-500 rounded-full">
-            <FaSearch className="mr-2" /> SEARCH
-          </button>
-          <button className="flex items-center justify-center px-4 py-2 text-teal-500 bg-teal-100 rounded-full">
-            <FaFilter className="mr-2" /> FILTERS <span className="ml-2 p-1 bg-teal-500 text-white rounded-full">3</span>
-          </button>
-        </div>
+        <h2 className="text-lg font-bold">Table Data</h2>
+        <button onClick={openAddModal} className="px-4 py-2 bg-teal-500 text-white rounded-full">
+          Add New Row
+        </button>
       </div>
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="min-w-full text-left">
           <thead>
             <tr>
@@ -96,13 +93,10 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, index) => (
-              <tr
-                key={index}
-                className={`${
-                  index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-                } border-b`}
-              >
+            {tableData.map((row, index) => (
+              <tr key={index} className={`${
+                index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+              } border-b`}>
                 <td className="px-4 py-2 text-teal-500 underline cursor-pointer">
                   {row.donor}
                 </td>
@@ -115,16 +109,45 @@ const Table = () => {
                 <td className="px-4 py-2">{row.amount}</td>
                 <td className="px-4 py-2">{row.observedBy}</td>
                 <td className="px-4 py-2">{row.status}</td>
-                <td className="px-4 py-2">
-                  <button className="px-3 py-1 rounded-full text-teal-500">
-                    •••
+                <td className="px-4 py-2 relative">
+                  <button
+                    className="px-3 py-1 rounded-full text-teal-500"
+                    onClick={() => toggleDropdown(index)}
+                  >
+                    <FaEllipsisV />
                   </button>
+                  {openDropdownIndex === index && ( // Show dropdown only for the open row
+                    <div className="absolute mt-2 right-0 bg-white border rounded shadow-md z-50"> {/* Higher z-index */}
+                      <button
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        onClick={() => openEditModal(index)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        onClick={() => handleDelete(index)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Modal for Adding/Editing Row */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleSubmit}
+        formData={formData}
+        setFormData={setFormData}
+        isEditMode={isEditMode}
+      />
     </div>
   );
 };
